@@ -5,8 +5,6 @@
                "org.quartz.threadPool.threadCount" "1"
                "org.quartz.jobStore.class" "org.quartz.simpl.RAMJobStore"})
 
-(def ^:dynamic *scheduler* nil)
-
 (defmacro with-test-scheduler
   [scheduler & body]
   `(let [~scheduler (create-scheduler defaults)]
