@@ -7,7 +7,8 @@
   (:use [clj-quartz.core :only (as-properties)]))
 
 (defn create-scheduler
-  "See defaults for examples."
+  "Creates a scheduler with the provided configuration (a sequence of
+   property name/values)."
   [config]
   (.getScheduler (doto (StdSchedulerFactory.)
                    (.initialize (as-properties config)))))
