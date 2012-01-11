@@ -10,7 +10,8 @@
 (defmacro with-test-scheduler
   [scheduler & body]
   `(let [~scheduler (create-scheduler defaults)]
-     (try ~@body
+     (try (do (start ~scheduler)
+              ~@body)
           (finally (shutdown ~scheduler)))))
 
 (deftest test-scheduler-is-started-in-test
