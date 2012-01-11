@@ -6,6 +6,8 @@ A Clojure library for scheduling and running jobs using the [Quartz Scheduler](h
 
 You can see more information in the [example](https://github.com/pingles/clj-quartz/blob/master/src/clj_quartz/example/simple.clj).
 
+    ;; see http://quartz-scheduler.org/documentation/quartz-2.x/configuration
+    ;; for more information on configuration settings
     (def defaults {"org.quartz.scheduler.instanceName" "Testing"
                    "org.quartz.threadPool.threadCount" "1"
                    "org.quartz.jobStore.class" "org.quartz.simpl.RAMJobStore"})
