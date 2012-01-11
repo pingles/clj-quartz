@@ -49,9 +49,6 @@
 ;; described in job.
 
 (defn schedule
-  "Schedules the job for execution. If no trigger is provided
-   the SimpleTrigger will be used that executes jobs immediately."
-  ([^Scheduler scheduler job]
-     (.scheduleJob scheduler ^JobDetail job (SimpleTriggerImpl.)))
+  "Schedules the job for execution."
   ([^Scheduler scheduler ^JobDetail job ^Trigger trigger]
      (.scheduleJob scheduler job trigger)))
