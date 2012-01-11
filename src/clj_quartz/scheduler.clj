@@ -33,6 +33,10 @@
      :shutdown (.isShutdown data)
      :started (.isStarted data)}))
 
+(defn started?
+  [scheduler]
+  (:started (metadata scheduler)))
+
 (defn job-factory
   []
   (proxy [JobFactory] []
