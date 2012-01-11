@@ -2,7 +2,6 @@
       :doc "Functions to creating and controlling Quartz Schedulers."}
   clj-quartz.scheduler
   (:import [org.quartz.impl StdSchedulerFactory]
-           [org.quartz.spi JobFactory TriggerFiredBundle]
            [org.quartz Scheduler])
   (:use [clj-quartz.core :only (as-properties)]))
 
@@ -39,8 +38,3 @@
 (defn started?
   [scheduler]
   (:started (metadata scheduler)))
-
-(defn job-factory
-  []
-  (proxy [JobFactory] []
-    (newJob [^TriggerFiredBundle bundle ^Scheduler scheduler])))
