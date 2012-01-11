@@ -2,7 +2,8 @@
       :doc "Functions to creating and controlling Quartz Schedulers."}
   clj-quartz.scheduler
   (:import [org.quartz.impl StdSchedulerFactory]
-           [org.quartz Scheduler])
+           [org.quartz Scheduler JobDetail Trigger]
+           [org.quartz.impl.triggers SimpleTriggerImpl])
   (:use [clj-quartz.core :only (as-properties)]))
 
 (defn create-scheduler
@@ -38,3 +39,19 @@
 (defn started?
   [scheduler]
   (:started (metadata scheduler)))
+
+
+;; TODO
+;; change interface of schedule so it works with the description
+;; of jobs + data from the job ns.
+;;
+;; in the meantime, create the Quartz objects based on the map
+;; described in job.
+
+(defn schedule
+  "Schedules the job for execution. If no trigger is provided
+   the SimpleTrigger will be used that executes jobs immediately."
+  ([^Scheduler scheduler job]
+     (.scheduleJob scheduler ^JobDetail job (SimpleTriggerImpl.)))
+  ([^Scheduler scheduler ^JobDetail job ^Trigger trigger]
+     (.scheduleJob scheduler job trigger)))
