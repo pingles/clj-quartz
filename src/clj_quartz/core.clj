@@ -1,4 +1,6 @@
-(ns clj-quartz.core
+(ns ^{:author "Paul Ingles"
+      :doc "Utility functions used in clj-quartz."}
+  clj-quartz.core
   (:import [java.util Properties]))
 
 (defn as-properties

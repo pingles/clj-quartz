@@ -1,4 +1,6 @@
-(ns clj-quartz.scheduler
+(ns ^{:author "Paul Ingles"
+      :doc "Functions to creating and controlling Quartz Schedulers."}
+  clj-quartz.scheduler
   (:import [org.quartz.impl StdSchedulerFactory]
            [org.quartz.spi JobFactory TriggerFiredBundle]
            [org.quartz Scheduler])
