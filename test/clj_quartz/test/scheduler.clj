@@ -1,6 +1,8 @@
 (ns clj-quartz.test.scheduler
+  (:import [java.util.concurrent CountDownLatch]
+           [org.quartz JobKey])
   (:use [clojure.test]
-        [clj-quartz.scheduler :only (add-job delete-job job-keys group-names)]
+        [clj-quartz.scheduler :only (add-job delete-job job-keys group-names trigger)]
         [clj-quartz.job :only (create-job-detail)]
         [clj-quartz.test-utils :only (with-test-scheduler)] :reload))
 
@@ -18,3 +20,17 @@
                            :group "group"})
     (is (= 0 (count (group-names scheduler))))
     (is (= 0 (count (job-keys scheduler "group"))))))
+
+(deftest list-executing-jobs
+  (let [latch (CountDownLatch. 1)
+        result (atom [])
+        execute-fn (fn [x] (do (.countDown latch)
+                              (swap! result conj x)))]
+    (with-test-scheduler scheduler
+      (add-job scheduler (create-job-detail {:f execute-fn
+                                             :name "name"
+                                             :group "group"}))
+      (trigger scheduler (JobKey. "name" "group"))
+      (.await latch))
+    (is (= 1
+           (count @result)))))

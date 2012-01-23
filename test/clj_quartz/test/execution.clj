@@ -36,27 +36,17 @@
                                     :data {:a "Hello"}})
                 (trigger-now {:name "unique name" :group "group name"}))
       (.await latch))
-    (is (= 1
-           (count @result)))))
+    (is (= 1 (count @result)))))
 
 (deftest add-job-and-trigger
   (let [latch (CountDownLatch. 1)
         result (atom [])
-        execute-fn (fn [x] (do (.countDown latch)
-                              (swap! result conj x)))]
+        execute-fn (fn [x] (do (swap! result conj x)
+                              (.countDown latch)))]
     (with-test-scheduler scheduler
       (add-job scheduler (create-job-detail {:f execute-fn
                                              :name "name"
                                              :group "group"}))
-      (schedule scheduler (trigger-now {:name "name" :group "group"})))))
-
-(deftest trigger-job-immediately
-  (let [latch (CountDownLatch. 1)
-        result (atom [])
-        execute-fn (fn [x] (do (.countDown latch)
-                              (swap! result conj x)))]
-    (with-test-scheduler scheduler
-      (add-job scheduler (create-job-detail {:f execute-fn
-                                             :name "name"
-                                             :group "group"}))
-      (trigger scheduler (JobKey. "name" "group")))))
+      (schedule scheduler (trigger-now {:name "name" :group "group"}))
+      (.await latch)
+      (is (= 1 (count @result))))))

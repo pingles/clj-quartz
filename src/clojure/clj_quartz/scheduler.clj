@@ -2,7 +2,7 @@
       :doc "Functions to creating and controlling Quartz Schedulers."}
   clj-quartz.scheduler
   (:import [org.quartz.impl StdSchedulerFactory]
-           [org.quartz Scheduler JobDetail Trigger JobKey]
+           [org.quartz Scheduler JobDetail Trigger JobKey JobDataMap]
            [org.quartz.impl.triggers SimpleTriggerImpl]
            [org.quartz.impl.matchers GroupMatcher])
   (:use [clj-quartz.core :only (as-properties)]))
@@ -72,8 +72,10 @@
 
 (defn trigger
   "Schedules a previously added job with specified trigger."
-  [^Scheduler scheduler ^JobKey job-key]
-  (.triggerJob scheduler job-key))
+  ([^Scheduler scheduler ^JobKey job-key m]
+     (.triggerJob scheduler job-key (JobDataMap. m)))
+  ([^Scheduler scheduler ^JobKey job-key]
+     (.triggerJob scheduler job-key)))
 
 (defn group-names
   [^Scheduler scheduler]
