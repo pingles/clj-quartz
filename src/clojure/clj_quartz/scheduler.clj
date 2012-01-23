@@ -22,6 +22,11 @@
   [^Scheduler scheduler]
   (.shutdown scheduler))
 
+(defn standby
+  "Temporarily halts the firing of triggers."
+  [^Scheduler scheduler]
+  (.standby scheduler))
+
 (defn metadata
   [^Scheduler scheduler]
   (let [data (.getMetaData scheduler)]
@@ -40,7 +45,6 @@
 (defn started?
   [scheduler]
   (:started (metadata scheduler)))
-
 
 ;; TODO
 ;; change interface of schedule so it works with the description
