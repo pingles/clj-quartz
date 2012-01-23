@@ -66,6 +66,10 @@
   [^Scheduler scheduler ^JobDetail job & {:keys [replace] :or {replace true}}]
   (.addJob scheduler job replace))
 
+(defn delete-job
+  [^Scheduler scheduler {:keys [group name]}]
+  (.deleteJob scheduler (JobKey. name group)))
+
 (defn trigger
   "Schedules a previously added job with specified trigger."
   [^Scheduler scheduler ^JobKey job-key]
