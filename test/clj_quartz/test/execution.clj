@@ -3,7 +3,7 @@
            [org.quartz.impl.triggers SimpleTriggerImpl])
   (:use [clojure.test]
         [clj-quartz.job :only (create-job-detail)]
-        [clj-quartz.scheduler :only (started? schedule)]
+        [clj-quartz.scheduler :only (started? schedule add-job trigger)]
         [clj-quartz.test-utils :only (with-test-scheduler)] :reload))
 
 (defn trigger-now
@@ -37,3 +37,14 @@
       (.await latch))
     (is (= 1
            (count @result)))))
+
+(deftest add-job-and-trigger
+  (let [latch (CountDownLatch. 1)
+        result (atom [])
+        execute-fn (fn [x] (do (.countDown latch)
+                              (swap! result conj x)))]
+    (with-test-scheduler scheduler
+      (add-job scheduler (create-job-detail {:f execute-fn
+                                             :name "name"
+                                             :group "group"}))
+      (trigger scheduler (trigger-now {:name "name" :group "group"})))))

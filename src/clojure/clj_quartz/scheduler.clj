@@ -50,7 +50,8 @@
 ;; described in job.
 
 (defn schedule
-  "Schedules the job for execution."
+  "Schedules the job for execution. Provide a trigger to create
+   trigger now."
   [^Scheduler scheduler ^JobDetail job ^Trigger trigger]
   (.scheduleJob scheduler job trigger))
 
@@ -58,6 +59,11 @@
   "Adds a job ready for scheduling later."
   [^Scheduler scheduler ^JobDetail job & {:keys [replace] :or {replace true}}]
   (.addJob scheduler job replace))
+
+(defn trigger
+  "Schedules a previously added job with specified trigger."
+  [^Scheduler scheduler ^Trigger trigger]
+  (.scheduleJob scheduler trigger))
 
 (defn group-names
   [^Scheduler scheduler]
