@@ -14,7 +14,7 @@
     (.setGroup group)
     (.setJobName name)
     (.setJobGroup group)
-    (.setRepeatCount 1)
+    (.setRepeatCount 0)
     (.setRepeatInterval 1000)
     (.setStartTime (java.util.Date.))))
 
