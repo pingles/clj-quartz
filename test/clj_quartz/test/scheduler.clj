@@ -8,7 +8,7 @@
 
 (deftest jobs
   (with-test-scheduler scheduler
-    (add-job scheduler (create-job-detail {:f (fn [_])
+    (add-job scheduler (create-job-detail {:f (fn [_ _])
                                            :name "name"
                                            :group "group"}))
     (is (= 1 (count (group-names scheduler))))
@@ -24,8 +24,8 @@
 (deftest list-executing-jobs
   (let [latch (CountDownLatch. 1)
         result (atom [])
-        execute-fn (fn [x] (do (.countDown latch)
-                              (swap! result conj x)))]
+        execute-fn (fn [x _] (do (.countDown latch)
+                                (swap! result conj x)))]
     (with-test-scheduler scheduler
       (add-job scheduler (create-job-detail {:f execute-fn
                                              :name "name"

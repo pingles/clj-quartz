@@ -23,6 +23,6 @@ public class ClojureFnJob implements Job {
         }
 
         IFn fn = (IFn)context.getMergedJobDataMap().get(":fn");
-        Object result = fn.invoke(context.getMergedJobDataMap());
+        Object result = fn.invoke(context.getMergedJobDataMap(), context);
     }
 }

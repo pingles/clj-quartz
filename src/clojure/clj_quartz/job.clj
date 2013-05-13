@@ -1,7 +1,7 @@
 (ns clj-quartz.job
   (:import [org.quartz.spi JobFactory TriggerFiredBundle]
            [org.quartz.impl JobDetailImpl]
-           [org.quartz Scheduler JobDetail JobKey JobDataMap]
+           [org.quartz Scheduler JobBuilder JobDetail JobKey JobDataMap]
            [com.clojurista.cljquartz ClojureFnJob]))
 
 
@@ -39,7 +39,11 @@
   "Creates the Quartz JobDetail object."
   [{:keys [name group data f]}]
   (let [fn-data (create-fn-data f)
-        job-detail (JobDetailImpl. name group ClojureFnJob)]
+        job-detail (-> (JobBuilder/newJob)
+                       (.ofType ClojureFnJob)
+                       (.storeDurably)
+                       (.withIdentity name group)
+                       (.build))]
     (doseq [[n v] (merge data fn-data)]
       (.put (.getJobDataMap job-detail) (str n) v))
     job-detail))

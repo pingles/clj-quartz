@@ -26,8 +26,8 @@
 (deftest test-job-execution-in-scheduler
   (let [latch (CountDownLatch. 1)
         result (atom [])
-        execute-fn (fn [x] (do (.countDown latch)
-                              (swap! result conj x)))]
+        execute-fn (fn [x _] (do (.countDown latch)
+                                (swap! result conj x)))]
     (with-test-scheduler scheduler
       (schedule scheduler
                 (create-job-detail {:f execute-fn
@@ -41,8 +41,8 @@
 (deftest add-job-and-trigger
   (let [latch (CountDownLatch. 1)
         result (atom [])
-        execute-fn (fn [x] (do (swap! result conj x)
-                              (.countDown latch)))]
+        execute-fn (fn [x _] (do (swap! result conj x)
+                                (.countDown latch)))]
     (with-test-scheduler scheduler
       (add-job scheduler (create-job-detail {:f execute-fn
                                              :name "name"
