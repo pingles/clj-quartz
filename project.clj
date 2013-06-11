@@ -1,5 +1,5 @@
-(defproject clj-quartz/clj-quartz "0.0.2-SNAPSHOT" 
-  :dependencies [[org.clojure/clojure "1.4.0"]
+(defproject clj-quartz/clj-quartz "0.0.2" 
+  :dependencies [[org.clojure/clojure "1.5.1"]
                  [org.clojure/tools.logging "0.2.6"]
                  [org.quartz-scheduler/quartz "2.1.7"]]
   :source-paths ["src/clojure"]
