@@ -8,3 +8,5 @@
 /.lein-deps-sum
 autodoc/**
 target/
+.lein-repl-history
+pom.xml.asc

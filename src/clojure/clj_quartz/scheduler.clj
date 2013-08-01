@@ -77,6 +77,10 @@
   ([^Scheduler scheduler ^JobKey job-key]
      (.triggerJob scheduler job-key)))
 
+(defn triggers
+  [^Scheduler scheduler ^JobKey job-key]
+  (.getTriggersOfJob scheduler job-key))
+
 (defn group-names
   [^Scheduler scheduler]
   (.getJobGroupNames scheduler))

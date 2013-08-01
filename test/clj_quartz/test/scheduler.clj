@@ -1,8 +1,8 @@
 (ns clj-quartz.test.scheduler
   (:import [java.util.concurrent CountDownLatch]
-           [org.quartz JobKey])
+           [org.quartz JobKey SimpleTrigger])
   (:use [clojure.test]
-        [clj-quartz.scheduler :only (add-job delete-job job-keys group-names trigger)]
+        [clj-quartz.scheduler :only (add-job delete-job job-keys group-names trigger triggers)]
         [clj-quartz.job :only (create-job-detail)]
         [clj-quartz.test-utils :only (with-test-scheduler)] :reload))
 
@@ -34,3 +34,13 @@
       (.await latch))
     (is (= 1
            (count @result)))))
+
+(deftest listing-triggers
+  (with-test-scheduler scheduler
+    (add-job scheduler (create-job-detail {:f identity
+                                           :name "name"
+                                           :group "group"}))
+    (trigger scheduler (JobKey. "name" "group"))
+    (let [ts (triggers scheduler (JobKey. "name" "group"))]
+      (is (= 1 (count ts)))
+      (is (instance? SimpleTrigger (first ts))))))
